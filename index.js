@@ -4,6 +4,11 @@ const express = require('express')
 const app = express()
 const port = 4010
 
+
+const {
+    waitTimeMs
+} = require("./config.json")
+
 app.get('/download/:id', async (req, res) => {
     var { id } = req.params
     console.log(id)
@@ -15,6 +20,10 @@ app.get('/download/:id', async (req, res) => {
     }
     res.redirect(url)
 })
+
+
+
+app.use(express.static('public'))
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
@@ -28,7 +37,7 @@ async function getDirectUrl(id) {
             'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
             'accept-language': 'en-US,en;q=0.9',
             'cache-control': 'no-cache',
-            'cookie': '_ga=GA1.1.1449128505.1702227289; _ga_40Y7JFT57E=GS1.1.1702227289.1.1.1702228275.0.0.0; XSRF-TOKEN=eyJpdiI6ImNveUIyN2NxazBVKy9SN2phVHpTMXc9PSIsInZhbHVlIjoiV3czZ0YvS2tldGpBNXlUSktrazgycUVQejd3VlhuM0lDejJPUlVWU0UwZS9yVzlzN2tmMEVtZWJRVlRNbDN6Vm1WQU1kMEN1ZmRsVWtxbmw0aE9aYjdSd3NaTlczL3Bnc093Rk41aTlQWFhqZ0wxV1BtYVpXbFlFd0NWZk0yUE8iLCJtYWMiOiI0MGM3NWY5MjU5NmQzMDEwNzgxOTNjMWY5YmZiYjRiZDk1YTJjYTFmODAxZTA5YzQxY2IwZTc3OTRmYjM2YzUyIiwidGFnIjoiIn0%3D; uploadhaven_session=eyJpdiI6InpFd3VuQUdKYnM0YXIxTkJRZUtEZkE9PSIsInZhbHVlIjoiTFdsY1RuditORDBnQ2U4bU9mcXVPcFlweGlrK3U1b2N2ek1jOGxKUTFPTktydFdJYUl0cldRYmZUck53aTJIZGtBVjhuMEtvem45RXdPakxKNmROTWpkNDdIenVOWUdiN0NhOHpZVVZOeXRRcVphS3grMkwyWnpqaEZOVEZ2YmMiLCJtYWMiOiIzNWNmOGY2YjNlMmM1NDg1YjBjMzk4M2E0NDAxZGU3NzM1MDQ0MjM0OWJkZDg1MjUyNWViYmRkYTYyOGFhMDMxIiwidGFnIjoiIn0%3D',
+            'cookie': 'uploadhaven_session=eyJpdiI6InpFd3VuQUdKYnM0YXIxTkJRZUtEZkE9PSIsInZhbHVlIjoiTFdsY1RuditORDBnQ2U4bU9mcXVPcFlweGlrK3U1b2N2ek1jOGxKUTFPTktydFdJYUl0cldRYmZUck53aTJIZGtBVjhuMEtvem45RXdPakxKNmROTWpkNDdIenVOWUdiN0NhOHpZVVZOeXRRcVphS3grMkwyWnpqaEZOVEZ2YmMiLCJtYWMiOiIzNWNmOGY2YjNlMmM1NDg1YjBjMzk4M2E0NDAxZGU3NzM1MDQ0MjM0OWJkZDg1MjUyNWViYmRkYTYyOGFhMDMxIiwidGFnIjoiIn0%3D',
             'dnt': '1',
             'pragma': 'no-cache',
             'referer': 'https://steamunlocked.net/',
@@ -51,7 +60,7 @@ async function getDirectUrl(id) {
     var hash = $(downloadForm).find('input[name="hash"]').attr("value")
     var token = $('meta[name="csrf-token"]').attr("content")
 
-    await new Promise(r => setTimeout(r, 5000));
+    await new Promise(r => setTimeout(r, waitTimeMs));
 
     var html = await (await axios.post(url,
         new URLSearchParams({
@@ -66,7 +75,7 @@ async function getDirectUrl(id) {
                 'authority': 'uploadhaven.com',
                 'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
                 'accept-language': 'en-US,en;q=0.9',
-                'cache-control': 'no-cache','dnt': '1',
+                'cache-control': 'no-cache', 'dnt': '1',
                 'origin': 'https://uploadhaven.com',
                 'pragma': 'no-cache',
                 'referer': url,

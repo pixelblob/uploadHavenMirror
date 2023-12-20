@@ -1,0 +1,38 @@
+body {
+    background-color: #292a2b;
+    color: antiquewhite;
+    display: flex;
+    justify-content: center;
+    margin: 0px;
+    padding: 0px;
+    align-content: center;
+    flex-wrap: wrap;
+    height: 100vh;
+}
+
+#mainPanel {
+    background-color: #242526;
+    padding: 15px;
+    min-height: 50%;
+    min-width: 50%;
+}
+
+#mainPanel > form {
+    display: flex;
+    flex-direction: column;
+}
+
+h1 {
+    text-align: center;
+}
+
+input {
+    text-align: center;
+    margin: 15px;
+    font-size: 1.3em;
+    border: none;
+}
+
+.error {
+    background-color: red;
+}

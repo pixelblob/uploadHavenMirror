@@ -1,7 +1,10 @@
 const axios = require("axios");
 const cheerio = require("cheerio");
-const express = require('express')
-const app = express()
+const express = require('express');
+const NodeCache = require("node-cache");
+const urlCache = new NodeCache();
+const app = express();
+
 const port = 4010
 
 
@@ -52,6 +55,9 @@ async function getDirectUrl(id) {
             'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36'
         }
     })).data
+    
+    var cachedUrl = urlCache.get(id)
+    if (cachedUrl) return cachedUrl
 
     var $ = cheerio.load(html)
     var downloadForm = $("#form-download")
@@ -95,6 +101,16 @@ async function getDirectUrl(id) {
     var $ = cheerio.load(html)
 
     var link = $(".download-timer a").attr("href")
+
+    console.log(link)
+
+    var expire = new URL(link).searchParams.get("expire")
+
+    var secondsToExpire = Math.round(expire - new Date().getTime() / 1000)
+
+    console.log(secondsToExpire)
+
+    urlCache.set(id, link, secondsToExpire)
 
     return link
 }
